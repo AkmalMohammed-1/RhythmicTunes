@@ -6,13 +6,14 @@ import {
   SidebarInset
 } from './ui/sidebar'
 import { Separator } from './ui/separator'
+import { ThemeToggle } from './theme-toggle'
 
 export function Layout({ children }) {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+      <SidebarInset className="flex flex-col h-screen">
+        <header className="flex h-16 shrink-0 items-center justify-between gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12 border-b">
           <div className="flex items-center gap-2 px-4">
             <SidebarTrigger className="-ml-1" />
             <Separator
@@ -25,8 +26,11 @@ export function Layout({ children }) {
               <span className="text-muted-foreground">Home</span>
             </div>
           </div>
+          <div className="px-4">
+            <ThemeToggle />
+          </div>
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+        <div className="flex-1 overflow-auto scrollbar-hide">
           {children}
         </div>
       </SidebarInset>
