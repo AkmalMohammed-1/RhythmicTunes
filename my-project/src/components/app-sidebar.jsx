@@ -95,7 +95,7 @@ const playlists = [
   "Study Music",
 ];
 
-export function AppSidebar() {
+export function AppSidebar({ onNavigate }) {
   return (
     <Sidebar>
       <SidebarHeader>
@@ -114,16 +114,38 @@ export function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
-              {mainNavItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+              {mainNavItems.map((item) => {
+                if (item.title === "Your Library") {
+                  return (
+                    <SidebarMenuItem key={item.title}>
+                      <SidebarMenuButton onClick={() => onNavigate && onNavigate('library')}>
+                        <item.icon />
+                        <span>{item.title}</span>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  )
+                }
+                if (item.title === "Home") {
+                  return (
+                    <SidebarMenuItem key={item.title}>
+                      <SidebarMenuButton onClick={() => onNavigate && onNavigate('home')}>
+                        <item.icon />
+                        <span>{item.title}</span>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  )
+                }
+                return (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton asChild>
+                      <a href={item.url}>
+                        <item.icon />
+                        <span>{item.title}</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                )
+              })}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
