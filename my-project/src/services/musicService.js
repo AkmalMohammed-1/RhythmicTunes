@@ -87,8 +87,7 @@ export const musicService = {
         artist_name: artistMap[song.artist_id]?.name || 'Unknown Artist',
         artist: artistMap[song.artist_id],
         album_name: albumMap[song.album_id]?.title || 'Unknown Album',
-        album: albumMap[song.album_id],
-        cover_url: albumMap[song.album_id]?.cover_url || null
+        album: albumMap[song.album_id]
       }))
 
       return enhancedSongs

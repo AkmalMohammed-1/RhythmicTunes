@@ -3,6 +3,11 @@ import api from './api'
 // User API Service
 export const userService = {
   // User management
+  getAllUsers: async () => {
+    const response = await api.get('/users')
+    return response.data
+  },
+
   createUser: async (userData) => {
     const response = await api.post('/users', userData)
     return response.data
@@ -51,6 +56,12 @@ export const userService = {
 
   addSongToPlaylist: async (playlistId, songId) => {
     const playlist = await userService.getPlaylistById(playlistId)
+    
+    // Check if song already exists in playlist
+    if (playlist.song_ids.includes(songId)) {
+      throw new Error('Song is already in this playlist')
+    }
+    
     const updatedSongIds = [...playlist.song_ids, songId]
     return await userService.updatePlaylist(playlistId, {
       ...playlist,

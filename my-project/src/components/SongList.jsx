@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from 'react'
 import { useAudio } from '../contexts/AudioContext'
+import { useLikes } from '../contexts/LikeContext'
 import { Button } from './ui/button'
 import { musicService } from '../services'
+import AddToPlaylistDropdown from './AddToPlaylistDropdown'
 import { 
   Play, 
   Pause, 
   Heart, 
   MoreHorizontal,
   Clock,
-  Music
+  Music,
+  Plus
 } from 'lucide-react'
 import { cn } from '../lib/utils'
 
-function SongList({ songs: propSongs, playlist = null, className }) {
+function SongList({ songs: propSongs, playlist = null, className, showAddToPlaylist = false, onSongSelect, showRanking = false, currentSongId }) {
   const [songs, setSongs] = useState(propSongs || [])
   const [loading, setLoading] = useState(!propSongs)
   const { 
@@ -22,6 +25,7 @@ function SongList({ songs: propSongs, playlist = null, className }) {
     togglePlayPause,
     formatTime 
   } = useAudio()
+  const { isLiked, toggleLike } = useLikes()
 
   useEffect(() => {
     if (!propSongs) {
@@ -42,14 +46,18 @@ function SongList({ songs: propSongs, playlist = null, className }) {
   }
 
   const handlePlaySong = (song, index) => {
-    if (currentSong?.id === song.id) {
+    if (onSongSelect) {
+      onSongSelect(song, songs, index)
+    } else if (currentSong?.id === song.id) {
       togglePlayPause()
     } else {
       playSong(song, songs, index)
     }
   }
 
-  const isCurrentSong = (song) => currentSong?.id === song.id
+  const isCurrentSong = (song) => {
+    return currentSongId ? currentSongId === song.id : currentSong?.id === song.id
+  }
 
   if (loading) {
     return (
@@ -82,7 +90,7 @@ function SongList({ songs: propSongs, playlist = null, className }) {
     <div className={cn("space-y-1", className)}>
       {playlist && (
         <div className="flex items-center gap-2 mb-4 p-4 border-b">
-          <div className="w-16 h-16 bg-gradient-to-br from-primary/20 to-primary/10 rounded-lg flex items-center justify-center">
+          <div className="w-16 h-16 bg-linear-to-br from-primary/20 to-primary/10 rounded-lg flex items-center justify-center">
             <Music className="h-8 w-8 text-primary" />
           </div>
           <div>
@@ -142,7 +150,7 @@ function SongList({ songs: propSongs, playlist = null, className }) {
           </div>
 
           {/* Song Cover */}
-          <div className="w-10 h-10 bg-muted rounded flex items-center justify-center overflow-hidden flex-shrink-0">
+          <div className="w-10 h-10 bg-muted rounded flex items-center justify-center overflow-hidden shrink-0">
             {song.cover_url ? (
               <img 
                 src={song.cover_url} 
@@ -150,7 +158,7 @@ function SongList({ songs: propSongs, playlist = null, className }) {
                 className="w-full h-full object-cover"
               />
             ) : (
-              <div className="w-full h-full bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center">
+              <div className="w-full h-full bg-linear-to-br from-primary/20 to-primary/10 flex items-center justify-center">
                 <span className="text-xs font-medium text-primary">
                   {song.title?.[0]?.toUpperCase()}
                 </span>
@@ -180,14 +188,40 @@ function SongList({ songs: propSongs, playlist = null, className }) {
 
           {/* Actions */}
           <div className="flex items-center gap-2">
+            {showRanking && (
+              <div className="w-6 text-xs text-muted-foreground font-mono">
+                #{index + 1}
+              </div>
+            )}
+            
             <Button 
               variant="ghost" 
               size="sm" 
-              className="h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
-              onClick={(e) => e.stopPropagation()}
+              className={cn(
+                "h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity",
+                isLiked(song.id) && "opacity-100 text-red-500"
+              )}
+              onClick={(e) => {
+                e.stopPropagation()
+                toggleLike(song.id)
+              }}
             >
-              <Heart className="h-4 w-4" />
+              <Heart className={cn(
+                "h-4 w-4",
+                isLiked(song.id) && "fill-current"
+              )} />
             </Button>
+            
+            {showAddToPlaylist && (
+              <AddToPlaylistDropdown songId={song.id}>
+                <button 
+                  className="inline-flex items-center justify-center h-8 w-8 rounded-md border border-input bg-background hover:bg-accent hover:text-accent-foreground opacity-0 group-hover:opacity-100 transition-opacity"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <Plus className="h-4 w-4" />
+                </button>
+              </AddToPlaylistDropdown>
+            )}
             
             {/* Duration */}
             <div className="flex items-center gap-2 text-xs text-muted-foreground min-w-[50px] justify-end">

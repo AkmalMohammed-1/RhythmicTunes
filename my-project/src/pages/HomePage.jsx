@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { musicService, userService } from '../services'
-import SongList from './SongList'
-import PlayButton from './PlayButton'
-import { Button } from './ui/button'
+import { musicService } from '../services'
+import { usePlaylist } from '../contexts/PlaylistContext'
+import { useLikes } from '../contexts/LikeContext'
+import SongList from '../components/SongList'
+import PlayButton from '../components/PlayButton'
+import AddToPlaylistDropdown from '../components/AddToPlaylistDropdown'
+import { Button } from '../components/ui/button'
 import { 
   Play,
   Music,
@@ -11,12 +14,14 @@ import {
   Heart,
   Plus
 } from 'lucide-react'
+import { cn } from '../lib/utils'
 
 export function HomePage() {
   const [recentSongs, setRecentSongs] = useState([])
   const [popularSongs, setPopularSongs] = useState([])
-  const [playlists, setPlaylists] = useState([])
   const [loading, setLoading] = useState(true)
+  const { playlists } = usePlaylist()
+  const { isLiked, toggleLike } = useLikes()
 
   useEffect(() => {
     loadHomeData()
@@ -27,10 +32,7 @@ export function HomePage() {
       setLoading(true)
       
       // Load songs and sort by different criteria
-      const [songs, userPlaylists] = await Promise.all([
-        musicService.getSongsWithDetails(),  // Get songs with artist/album names
-        userService.getUserPlaylists(1) // Default user ID
-      ])
+      const songs = await musicService.getSongsWithDetails()  // Get songs with artist/album names
 
       // Get recent songs (last 6)
       const recent = songs.slice(0, 6)
@@ -42,7 +44,6 @@ export function HomePage() {
 
       setRecentSongs(recent)
       setPopularSongs(popular)
-      setPlaylists(userPlaylists || [])
       
     } catch (error) {
       console.error('Failed to load home data:', error)
@@ -98,7 +99,7 @@ export function HomePage() {
               className="group relative p-4 bg-card border rounded-lg hover:bg-accent/50 transition-colors cursor-pointer"
             >
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-muted rounded flex items-center justify-center overflow-hidden flex-shrink-0">
+                <div className="w-12 h-12 bg-muted rounded flex items-center justify-center overflow-hidden shrink-0">
                   {song.cover_url ? (
                     <img 
                       src={song.cover_url} 
@@ -106,7 +107,7 @@ export function HomePage() {
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center">
+                    <div className="w-full h-full bg-linear-to-br from-primary/20 to-primary/10 flex items-center justify-center">
                       <span className="text-xs font-medium text-primary">
                         {song.title?.[0]?.toUpperCase()}
                       </span>
@@ -163,20 +164,47 @@ export function HomePage() {
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center">
+                    <div className="w-full h-full bg-linear-to-br from-primary/20 to-primary/10 flex items-center justify-center">
                       <Music className="h-8 w-8 text-primary" />
                     </div>
                   )}
                 </div>
                 
                 {/* Play Button Overlay */}
-                <div className="absolute bottom-2 right-2">
+                <div className="absolute bottom-2 right-2 flex gap-1">
+                  <button 
+                    className={cn(
+                      "inline-flex items-center justify-center h-8 w-8 rounded-md transition-all transform translate-y-2 group-hover:translate-y-0 shadow-lg",
+                      isLiked(song.id) 
+                        ? "bg-red-500 text-white opacity-100" 
+                        : "bg-secondary text-secondary-foreground hover:bg-secondary/80 opacity-0 group-hover:opacity-100"
+                    )}
+                    onClick={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      toggleLike(song.id)
+                    }}
+                  >
+                    <Heart className={cn(
+                      "h-3 w-3",
+                      isLiked(song.id) && "fill-current"
+                    )} />
+                  </button>
+                  
+                  <AddToPlaylistDropdown songId={song.id}>
+                    <button 
+                      className="inline-flex items-center justify-center h-8 w-8 rounded-md bg-secondary text-secondary-foreground hover:bg-secondary/80 opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0 shadow-lg"
+                    >
+                      <Plus className="h-3 w-3" />
+                    </button>
+                  </AddToPlaylistDropdown>
+                  
                   <PlayButton 
                     song={song}
                     songs={popularSongs}
                     index={index}
                     size="sm"
-                    className="h-10 w-10 p-0 bg-primary text-primary-foreground opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0 shadow-lg"
+                    className="h-8 w-8 p-0 bg-primary text-primary-foreground opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0 shadow-lg"
                   />
                 </div>
               </div>
@@ -218,7 +246,7 @@ export function HomePage() {
                 className="group p-4 bg-card border rounded-lg hover:bg-accent/50 transition-colors cursor-pointer"
               >
                 <div className="relative mb-3">
-                  <div className="w-full aspect-square bg-gradient-to-br from-primary/20 to-primary/10 rounded-lg flex items-center justify-center">
+                  <div className="w-full aspect-square bg-linear-to-br from-primary/20 to-primary/10 rounded-lg flex items-center justify-center">
                     {playlist.cover_url ? (
                       <img 
                         src={playlist.cover_url} 
@@ -257,7 +285,7 @@ export function HomePage() {
           All Songs
         </h2>
         
-        <SongList />
+        <SongList showAddToPlaylist={true} />
       </section>
     </div>
   )
@@ -270,3 +298,5 @@ function getGreeting() {
   if (hour < 18) return 'afternoon'
   return 'evening'
 }
+
+export default HomePage

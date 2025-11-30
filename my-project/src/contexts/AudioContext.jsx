@@ -1,4 +1,6 @@
 import React, { createContext, useContext, useReducer, useRef, useEffect } from 'react'
+import { userService } from '../services'
+import { useAuth } from './AuthContext'
 
 // Audio Player States
 const INITIAL_STATE = {
@@ -158,6 +160,7 @@ export function AudioProvider({ children }) {
   const [state, dispatch] = useReducer(audioReducer, INITIAL_STATE)
   const audioRef = useRef(new Audio())
   const timeUpdateInterval = useRef(null)
+  const { user } = useAuth() // Get current user
 
   // Audio Event Handlers
   useEffect(() => {
@@ -246,11 +249,20 @@ export function AudioProvider({ children }) {
   }, [state.volume, state.isMuted])
 
   // Audio Control Functions
-  const playSong = (song, queue = [song], index = 0) => {
+  const playSong = async (song, queue = [song], index = 0) => {
     dispatch({ 
       type: audioActions.PLAY_SONG, 
       payload: { song, queue, index }
     })
+    
+    // Add to recently played if user is authenticated
+    if (user?.id && song?.id) {
+      try {
+        await userService.addToRecentlyPlayed(user.id, song.id)
+      } catch (error) {
+        console.warn('Failed to add to recently played:', error)
+      }
+    }
   }
 
   const pauseSong = () => {
