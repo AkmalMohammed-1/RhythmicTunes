@@ -1,4 +1,5 @@
 import React from 'react'
+import { useLocation } from 'react-router-dom'
 import { AppSidebar } from './app-sidebar'
 import {
   SidebarProvider,
@@ -8,7 +9,33 @@ import {
 import { Separator } from './ui/separator'
 import { ThemeToggle } from './theme-toggle'
 
+// Page title mappings
+const pageTitles = {
+  '/': 'Home',
+  '/search': 'Search',
+  '/library': 'Your Library',
+  '/browse': 'Browse',
+  '/radio': 'Radio',
+  '/podcasts': 'Podcasts',
+  '/liked-songs': 'Liked Songs',
+  '/recently-played': 'Recently Played',
+}
+
 export function Layout({ children }) {
+  const location = useLocation()
+  
+  // Get current page title
+  const getCurrentPageTitle = () => {
+    const path = location.pathname
+    
+    // Handle playlist routes
+    if (path.startsWith('/playlist/')) {
+      return 'Playlist'
+    }
+    
+    return pageTitles[path] || 'Unknown Page'
+  }
+
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -23,7 +50,7 @@ export function Layout({ children }) {
             <div className="flex items-center gap-2">
               <span className="font-semibold">RhythmicTunes</span>
               <span className="text-muted-foreground">›</span>
-              <span className="text-muted-foreground">Home</span>
+              <span className="text-muted-foreground">{getCurrentPageTitle()}</span>
             </div>
           </div>
           <div className="px-4">

@@ -1,105 +1,126 @@
 {
   "users": [
     {
-      "id": 1,
-      "username": "musiclover123",
-      "email": "musiclover@example.com",
-      "display_name": "Music Lover",
-      "avatar_url": "https://via.placeholder.com/150/1e40af/ffffff?text=ML",
-      "created_at": "2024-01-15T08:00:00Z",
+      "id": "8e44",
+      "username": "akmal",
+      "email": "ak@gmail.com",
+      "password": "akmal12",
+      "display_name": "akmal",
+      "created_at": "2025-11-30T14:54:07.064Z",
       "preferences": {
         "theme": "dark",
         "autoplay": true,
         "volume": 80,
         "quality": "high"
       },
-      "recently_played": [1, 3, 7, 12, 8]
+      "recently_played": [
+        "1",
+        "2"
+      ]
     }
   ],
   "artists": [
     {
-      "id": 1,
+      "id": "1",
       "name": "Lady Gaga",
       "bio": "Electronic music duo creating atmospheric soundscapes",
       "image_url": "https://picsum.photos/300/300?random=4",
-      "genres": ["Electronic", "Ambient", "Synthwave"]
+      "genres": [
+        "Electronic",
+        "Ambient",
+        "Synthwave"
+      ]
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "Kendrick Lamar",
       "bio": "Singer-songwriter with a passion for storytelling",
       "image_url": "https://picsum.photos/300/300?random=5",
-      "genres": ["Acoustic", "Folk", "Indie"]
-    },
-    {
-      "id": 3,
-      "name": "Bass Drop Collective",
-      "bio": "High-energy electronic music collective",
-      "image_url": "https://picsum.photos/300/300?random=6",
-      "genres": ["Electronic", "EDM", "Bass"]
+      "genres": [
+        "Acoustic",
+        "Folk",
+        "Indie"
+      ]
     }
   ],
   "albums": [
     {
-      "id": 1,
+      "id": "1",
       "title": "Neon Dreams",
       "artist_id": 1,
       "release_date": "2024-03-15",
-      "genres": ["Electronic", "Synthwave"],
+      "genres": [
+        "Electronic",
+        "Synthwave"
+      ],
       "track_count": 10
     },
     {
-      "id": 2,
+      "id": "2",
       "title": "Whispered Stories",
       "artist_id": 2,
       "release_date": "2024-02-20",
-      "genres": ["Acoustic", "Folk"],
+      "genres": [
+        "Acoustic",
+        "Folk"
+      ],
       "track_count": 8
     },
     {
-      "id": 3,
+      "id": "3",
       "title": "Beat Revolution",
       "artist_id": 3,
       "release_date": "2024-04-01",
-      "genres": ["Electronic", "EDM"],
+      "genres": [
+        "Electronic",
+        "EDM"
+      ],
       "track_count": 12
     },
     {
-      "id": 4,
+      "id": "4",
       "title": "All the Stars - Single",
       "artist_id": 1,
       "release_date": "2024-04-10",
-      "genres": ["Synthwave"],
+      "genres": [
+        "Synthwave"
+      ],
       "track_count": 1
     },
     {
-      "id": 5,
+      "id": "5",
       "title": "Digital Rain - Single",
       "artist_id": 1,
       "release_date": "2024-04-15",
-      "genres": ["Electronic"],
+      "genres": [
+        "Electronic"
+      ],
       "track_count": 1
     },
     {
-      "id": 6,
+      "id": "6",
       "title": "Mountain Road - Single",
       "artist_id": 2,
       "release_date": "2024-04-20",
-      "genres": ["Folk"],
+      "genres": [
+        "Folk"
+      ],
       "track_count": 1
     },
     {
-      "id": 7,
+      "id": "7",
       "title": "Starlight Serenade - Single",
       "artist_id": 2,
       "release_date": "2024-04-25",
-      "genres": ["Acoustic"],
+      "genres": [
+        "Acoustic"
+      ],
       "track_count": 1
     }
   ],
   "songs": [
     {
-      "id": 1,
+      "id": "1",
       "title": "Judas",
       "artist_id": 1,
       "album_id": 1,
@@ -110,11 +131,11 @@
       "play_count": 1250
     },
     {
-      "id": 2,
+      "id": "2",
       "title": "All the stars",
-      "artist_id": 1,
+      "artist_id": 2,
       "album_id": 4,
-      "duration": 198,
+      "duration": 215,
       "genre": "Synthwave",
       "track_number": 2,
       "audio_url": "/audio/All the Stars.mp3",
@@ -123,84 +144,75 @@
   ],
   "playlists": [
     {
-      "id": 1,
-      "name": "My Favorites",
-      "description": "Collection of my all-time favorite tracks",
-      "user_id": 1,
-      "cover_url": "https://via.placeholder.com/400/8b5cf6/ffffff?text=My+Favorites",
-      "created_at": "2024-01-20T10:00:00Z",
-      "updated_at": "2024-04-15T14:30:00Z",
-      "song_ids": [1, 4, 7, 12],
-      "is_public": false
+      "id": "8966",
+      "name": "My Playlist #1",
+      "description": "Created on 30/11/2025",
+      "song_ids": [
+        "2"
+      ],
+      "is_public": false,
+      "user_id": "e8c7",
+      "created_at": "2025-11-30T12:24:38.097Z",
+      "updated_at": "2025-11-30T12:24:38.097Z"
     },
     {
-      "id": 2,
-      "name": "Chill Vibes",
-      "description": "Perfect for relaxing and unwinding",
-      "user_id": 1,
-      "cover_url": "https://via.placeholder.com/400/06b6d4/ffffff?text=Chill+Vibes",
-      "created_at": "2024-02-01T16:00:00Z",
-      "updated_at": "2024-04-10T12:00:00Z",
-      "song_ids": [2, 5, 6, 11, 12],
-      "is_public": true
-    },
-    {
-      "id": 3,
-      "name": "Workout Energy",
-      "description": "High-energy tracks to power your workout",
-      "user_id": 1,
-      "cover_url": "https://via.placeholder.com/400/ef4444/ffffff?text=Workout+Energy",
-      "created_at": "2024-03-01T08:00:00Z",
-      "updated_at": "2024-04-05T18:45:00Z",
-      "song_ids": [7, 8, 9, 10],
-      "is_public": true
+      "id": "2207",
+      "name": "New Playlist",
+      "description": "Created on 30/11/2025",
+      "song_ids": [
+        "1"
+      ],
+      "is_public": false,
+      "user_id": "e8c7",
+      "created_at": "2025-11-30T12:57:57.638Z",
+      "updated_at": "2025-11-30T12:57:57.638Z"
     }
   ],
   "genres": [
     {
-      "id": 1,
+      "id": "1",
       "name": "Electronic",
       "description": "Electronic music and its subgenres",
       "color": "#3b82f6"
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "Acoustic",
       "description": "Acoustic instruments and unplugged sessions",
       "color": "#f59e0b"
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "Folk",
       "description": "Traditional and contemporary folk music",
       "color": "#10b981"
     },
     {
-      "id": 4,
+      "id": "4",
       "name": "EDM",
       "description": "Electronic Dance Music for the dancefloor",
       "color": "#ef4444"
     },
     {
-      "id": 5,
+      "id": "5",
       "name": "Synthwave",
       "description": "Retro-futuristic electronic music",
       "color": "#8b5cf6"
     },
     {
-      "id": 6,
+      "id": "6",
       "name": "Ambient",
       "description": "Atmospheric and textural soundscapes",
       "color": "#06b6d4"
     },
     {
-      "id": 7,
+      "id": "7",
       "name": "Indie",
       "description": "Independent music across various genres",
       "color": "#f97316"
     },
     {
-      "id": 8,
+      "id": "8",
       "name": "Bass",
       "description": "Bass-heavy electronic music",
       "color": "#84cc16"

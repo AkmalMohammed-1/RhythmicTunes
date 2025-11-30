@@ -1,0 +1,12 @@
+// Export all pages for easy importing
+export { default as HomePage } from './HomePage'
+export { default as Search } from './Search'
+export { default as Library } from './Library'
+export { default as Browse } from './Browse'
+export { default as LikedSongs } from './LikedSongs'
+export { default as RecentlyPlayed } from './RecentlyPlayed'
+export { default as Playlist } from './Playlist'
+export { default as Profile } from './Profile'
+export { default as Settings } from './Settings'
+export { default as LoginPage } from './LoginPage'
+export { default as SignupPage } from './SignupPage'
