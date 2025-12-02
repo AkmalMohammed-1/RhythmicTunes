@@ -64,10 +64,9 @@ export const musicService = {
   // Enhanced function to get songs with artist and album names
   getSongsWithDetails: async () => {
     try {
-      const [songs, artists, albums] = await Promise.all([
+      const [songs, artists] = await Promise.all([
         api.get('/songs'),
-        api.get('/artists'),
-        api.get('/albums')
+        api.get('/artists')
       ])
 
       // Create lookup maps for faster searching
@@ -76,18 +75,13 @@ export const musicService = {
         return map
       }, {})
 
-      const albumMap = albums.data.reduce((map, album) => {
-        map[album.id] = album
-        return map
-      }, {})
-
-      // Enhance songs with artist and album data
+      // Enhance songs with artist data
       const enhancedSongs = songs.data.map(song => ({
         ...song,
         artist_name: artistMap[song.artist_id]?.name || 'Unknown Artist',
         artist: artistMap[song.artist_id],
-        album_name: albumMap[song.album_id]?.title || 'Unknown Album',
-        album: albumMap[song.album_id]
+        album_name: 'Single', // Default since no albums
+        album: null
       }))
 
       return enhancedSongs

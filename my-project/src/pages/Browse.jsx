@@ -10,16 +10,9 @@ export function Browse() {
   const [featuredSongs, setFeaturedSongs] = useState([])
   const [topCharts, setTopCharts] = useState([])
   const [newReleases, setNewReleases] = useState([])
-  const [genres] = useState([
-    { name: 'Pop', songs: 156, color: 'bg-gradient-to-r from-pink-500 to-rose-500' },
-    { name: 'Rock', songs: 243, color: 'bg-gradient-to-r from-red-500 to-orange-500' },
-    { name: 'Hip Hop', songs: 189, color: 'bg-gradient-to-r from-purple-500 to-indigo-500' },
-    { name: 'Electronic', songs: 167, color: 'bg-gradient-to-r from-blue-500 to-cyan-500' },
-    { name: 'Jazz', songs: 98, color: 'bg-gradient-to-r from-yellow-500 to-amber-500' },
-    { name: 'Classical', songs: 134, color: 'bg-gradient-to-r from-green-500 to-emerald-500' }
-  ])
+  const [genres, setGenres] = useState([])
   const [loading, setLoading] = useState(true)
-  const { playSong, playPlaylist } = useAudio()
+  const { playSong } = useAudio()
 
   useEffect(() => {
     loadBrowseData()
@@ -27,19 +20,26 @@ export function Browse() {
 
   const loadBrowseData = async () => {
     try {
-      const songs = await musicService.getSongsWithDetails()
+      const [songsData, genresData] = await Promise.all([
+        musicService.getSongsWithDetails(),
+        musicService.getAllGenres()
+      ])
       
       // Featured songs (first 6)
-      setFeaturedSongs(songs.slice(0, 6))
+      setFeaturedSongs(songsData.slice(0, 6))
       
       // Top charts (by play count)
-      const chartSongs = [...songs]
+      const chartSongs = [...songsData]
         .sort((a, b) => (b.play_count || 0) - (a.play_count || 0))
         .slice(0, 10)
       setTopCharts(chartSongs)
       
       // New releases (last 8)
-      setNewReleases(songs.slice(-8))
+      setNewReleases(songsData.slice(-8))
+
+      // Set genres from database
+      setGenres(genresData)
+      
     } catch (error) {
       console.error('Failed to load browse data:', error)
     } finally {
@@ -47,12 +47,32 @@ export function Browse() {
     }
   }
 
-  const playGenrePlaylist = (genreName) => {
-    // Filter songs by genre (simplified - in real app would use genre field)
-    const shuffledSongs = [...featuredSongs, ...topCharts, ...newReleases]
-      .sort(() => Math.random() - 0.5)
-      .slice(0, 20)
-    playPlaylist(shuffledSongs, 0)
+  const playGenrePlaylist = async (genreName) => {
+    try {
+      // Get all songs with details first
+      const allSongs = await musicService.getSongsWithDetails()
+      
+      // Filter songs by the selected genre
+      const filteredSongs = allSongs.filter(song => song.genre === genreName)
+      
+      if (filteredSongs.length > 0) {
+        // Shuffle the songs for variety
+        const shuffledSongs = [...filteredSongs].sort(() => Math.random() - 0.5)
+        playSong(shuffledSongs[0], shuffledSongs, 0)
+        console.log(`Playing ${filteredSongs.length} songs from ${genreName} genre`)
+      } else {
+        console.log(`No songs found for genre: ${genreName}`)
+        // Fallback: play some random songs if no exact genre match
+        const randomSongs = [...featuredSongs, ...topCharts, ...newReleases]
+          .sort(() => Math.random() - 0.5)
+          .slice(0, 10)
+        if (randomSongs.length > 0) {
+          playSong(randomSongs[0], randomSongs, 0)
+        }
+      }
+    } catch (error) {
+      console.error('Failed to play genre playlist:', error)
+    }
   }
 
   if (loading) {
@@ -85,7 +105,7 @@ export function Browse() {
             <Star className="h-6 w-6 text-yellow-500" />
             Featured Music
           </h2>
-          <Button variant="outline" size="sm" onClick={() => playPlaylist(featuredSongs, 0)}>
+          <Button variant="outline" size="sm" onClick={() => featuredSongs.length > 0 && playSong(featuredSongs[0], featuredSongs, 0)}>
             <Play className="h-4 w-4 mr-2" />
             Play All
           </Button>
@@ -97,10 +117,10 @@ export function Browse() {
       <div className="space-y-4">
         <h2 className="text-2xl font-semibold">Browse by Genre</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {genres.map((genre, index) => (
-            <Card key={index} className="cursor-pointer hover:scale-105 transition-all duration-200 overflow-hidden group">
+          {genres.map((genre) => (
+            <Card key={genre.id} className="cursor-pointer hover:scale-105 transition-all duration-200 overflow-hidden group">
               <CardContent className="p-0">
-                <div className={`${genre.color} h-24 relative flex items-center justify-center`}>
+                <div className={`h-24 relative flex items-center justify-center`} style={{ backgroundColor: genre.color }}>
                   <Music className="h-8 w-8 text-white" />
                   <Button 
                     size="sm" 
@@ -112,7 +132,7 @@ export function Browse() {
                 </div>
                 <div className="p-4">
                   <h3 className="font-semibold">{genre.name}</h3>
-                  <p className="text-sm text-muted-foreground">{genre.songs} songs</p>
+                  <p className="text-sm text-muted-foreground">{genre.description}</p>
                 </div>
               </CardContent>
             </Card>
@@ -127,7 +147,12 @@ export function Browse() {
             <TrendingUp className="h-6 w-6 text-green-500" />
             Top Charts
           </h2>
-          <Button variant="outline" size="sm" onClick={() => playPlaylist(topCharts, 0)}>
+          <Button variant="outline" size="sm" onClick={() => {
+            if (topCharts.length > 0) {
+              const shuffled = [...topCharts].sort(() => Math.random() - 0.5)
+              playSong(shuffled[0], shuffled, 0)
+            }
+          }}>
             <Shuffle className="h-4 w-4 mr-2" />
             Shuffle Play
           </Button>
@@ -145,7 +170,7 @@ export function Browse() {
           {newReleases.map((song, index) => (
             <Card key={song.id} className="cursor-pointer hover:scale-105 transition-transform group">
               <CardContent className="p-4 text-center">
-                <div className="w-full aspect-square bg-gradient-to-br from-primary/20 to-primary/10 rounded-lg flex items-center justify-center mb-3 relative overflow-hidden">
+                <div className="w-full aspect-square bg-linear-to-br from-primary/20 to-primary/10 rounded-lg flex items-center justify-center mb-3 relative overflow-hidden">
                   <Music className="h-8 w-8 text-primary" />
                   <Button 
                     size="sm" 

@@ -15,6 +15,7 @@
       },
       "recently_played": [
         "1",
+        "3",
         "2"
       ]
     }
@@ -41,81 +42,17 @@
         "Folk",
         "Indie"
       ]
-    }
-  ],
-  "albums": [
-    {
-      "id": "1",
-      "title": "Neon Dreams",
-      "artist_id": 1,
-      "release_date": "2024-03-15",
-      "genres": [
-        "Electronic",
-        "Synthwave"
-      ],
-      "track_count": 10
-    },
-    {
-      "id": "2",
-      "title": "Whispered Stories",
-      "artist_id": 2,
-      "release_date": "2024-02-20",
-      "genres": [
-        "Acoustic",
-        "Folk"
-      ],
-      "track_count": 8
     },
     {
       "id": "3",
-      "title": "Beat Revolution",
-      "artist_id": 3,
-      "release_date": "2024-04-01",
+      "name": "Sade Nancy",
+      "bio": "EDM producer known for high-energy festival tracks",
+      "image_url": "https://picsum.photos/300/300?random=6",
       "genres": [
         "Electronic",
-        "EDM"
-      ],
-      "track_count": 12
-    },
-    {
-      "id": "4",
-      "title": "All the Stars - Single",
-      "artist_id": 1,
-      "release_date": "2024-04-10",
-      "genres": [
-        "Synthwave"
-      ],
-      "track_count": 1
-    },
-    {
-      "id": "5",
-      "title": "Digital Rain - Single",
-      "artist_id": 1,
-      "release_date": "2024-04-15",
-      "genres": [
-        "Electronic"
-      ],
-      "track_count": 1
-    },
-    {
-      "id": "6",
-      "title": "Mountain Road - Single",
-      "artist_id": 2,
-      "release_date": "2024-04-20",
-      "genres": [
-        "Folk"
-      ],
-      "track_count": 1
-    },
-    {
-      "id": "7",
-      "title": "Starlight Serenade - Single",
-      "artist_id": 2,
-      "release_date": "2024-04-25",
-      "genres": [
-        "Acoustic"
-      ],
-      "track_count": 1
+        "EDM",
+        "Bass"
+      ]
     }
   ],
   "songs": [
@@ -123,7 +60,6 @@
       "id": "1",
       "title": "Judas",
       "artist_id": 1,
-      "album_id": 1,
       "duration": 245,
       "genre": "Electronic",
       "track_number": 1,
@@ -134,12 +70,21 @@
       "id": "2",
       "title": "All the stars",
       "artist_id": 2,
-      "album_id": 4,
       "duration": 215,
       "genre": "Synthwave",
       "track_number": 2,
       "audio_url": "/audio/All the Stars.mp3",
       "play_count": 980
+    },
+    {
+      "id": "3",
+      "title": "Smooth Operator",
+      "artist_id": 3,
+      "duration": 245,
+      "genre": "Electronic",
+      "track_number": 1,
+      "audio_url": "/audio/Smooth Operator.mp3",
+      "play_count": 1250
     }
   ],
   "playlists": [
@@ -166,6 +111,28 @@
       "user_id": "e8c7",
       "created_at": "2025-11-30T12:57:57.638Z",
       "updated_at": "2025-11-30T12:57:57.638Z"
+    },
+    {
+      "id": "f745",
+      "name": "My Playlist #1",
+      "description": "Created on 01/12/2025",
+      "song_ids": [
+        "1"
+      ],
+      "is_public": false,
+      "user_id": "8e44",
+      "created_at": "2025-12-01T04:11:06.225Z",
+      "updated_at": "2025-12-01T04:11:06.225Z"
+    },
+    {
+      "id": "337d",
+      "name": "My Playlist #2",
+      "description": "Created on 01/12/2025",
+      "song_ids": [],
+      "is_public": false,
+      "user_id": "8e44",
+      "created_at": "2025-12-01T14:47:07.836Z",
+      "updated_at": "2025-12-01T14:47:07.837Z"
     }
   ],
   "genres": [

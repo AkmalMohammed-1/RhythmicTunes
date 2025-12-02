@@ -11,16 +11,24 @@ export function Search() {
   const [searchQuery, setSearchQuery] = useState('')
   const [searchResults, setSearchResults] = useState([])
   const [recentSearches, setRecentSearches] = useState([])
-  const [popularCategories] = useState([
-    { name: 'Pop', icon: Music, color: 'bg-pink-500' },
-    { name: 'Rock', icon: Music, color: 'bg-red-500' },
-    { name: 'Hip Hop', icon: Music, color: 'bg-purple-500' },
-    { name: 'Electronic', icon: Music, color: 'bg-blue-500' },
-    { name: 'Jazz', icon: Music, color: 'bg-yellow-500' },
-    { name: 'Classical', icon: Music, color: 'bg-green-500' }
-  ])
+  const [selectedGenre, setSelectedGenre] = useState(null)
+  const [genreSongs, setGenreSongs] = useState([])
+  const [genres, setGenres] = useState([])
   const [loading, setLoading] = useState(false)
   const { playSong } = useAudio()
+
+  useEffect(() => {
+    loadGenres()
+  }, [])
+
+  const loadGenres = async () => {
+    try {
+      const genresData = await musicService.getAllGenres()
+      setGenres(genresData)
+    } catch (error) {
+      console.error('Failed to load genres:', error)
+    }
+  }
 
   const handleSearch = async (query, addToRecent = false) => {
     if (!query.trim()) {
@@ -53,6 +61,30 @@ export function Search() {
     if (e.key === 'Enter' && searchQuery.trim()) {
       handleSearch(searchQuery, true)
     }
+  }
+
+  const handleGenreClick = async (genreName) => {
+    try {
+      setLoading(true)
+      setSelectedGenre(genreName)
+      setSearchResults([]) // Clear search results when browsing by genre
+      
+      // Get all songs and filter by genre
+      const allSongs = await musicService.getSongsWithDetails()
+      const filteredSongs = allSongs.filter(song => song.genre === genreName)
+      
+      setGenreSongs(filteredSongs)
+    } catch (error) {
+      console.error('Failed to load genre songs:', error)
+      setGenreSongs([])
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const clearGenreSelection = () => {
+    setSelectedGenre(null)
+    setGenreSongs([])
   }
 
   useEffect(() => {
@@ -100,8 +132,33 @@ export function Search() {
         </div>
       )}
 
-      {/* Recent Searches & Categories when no search */}
-      {!searchQuery && (
+      {/* Genre Results */}
+      {selectedGenre && (
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-semibold">{selectedGenre} Songs</h2>
+            <Button variant="outline" size="sm" onClick={clearGenreSelection}>
+              Back to Browse
+            </Button>
+          </div>
+          {loading ? (
+            <div className="text-center py-8">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+              <p className="mt-2 text-muted-foreground">Loading {selectedGenre} songs...</p>
+            </div>
+          ) : genreSongs.length > 0 ? (
+            <SongList songs={genreSongs} onSongSelect={playSong} showAddToPlaylist />
+          ) : (
+            <div className="text-center py-8">
+              <Music className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+              <p className="text-muted-foreground">No {selectedGenre} songs found</p>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Recent Searches & Categories when no search and no genre selected */}
+      {!searchQuery && !selectedGenre && (
         <div className="space-y-8">
           {/* Recent Searches */}
           <div className="space-y-4">
@@ -127,19 +184,21 @@ export function Search() {
           <div className="space-y-4">
             <h2 className="text-xl font-semibold">Browse all</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {popularCategories.map((category, index) => {
-                const Icon = category.icon
-                return (
-                  <Card key={index} className="cursor-pointer hover:scale-105 transition-transform">
-                    <CardContent className="p-4">
-                      <div className={`w-12 h-12 ${category.color} rounded-lg flex items-center justify-center mb-3`}>
-                        <Icon className="h-6 w-6 text-white" />
-                      </div>
-                      <h3 className="font-medium">{category.name}</h3>
-                    </CardContent>
-                  </Card>
-                )
-              })}
+              {genres.map((genre) => (
+                <Card 
+                  key={genre.id} 
+                  className="cursor-pointer hover:scale-105 transition-transform"
+                  onClick={() => handleGenreClick(genre.name)}
+                >
+                  <CardContent className="p-4">
+                    <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-3" style={{ backgroundColor: genre.color }}>
+                      <Music className="h-6 w-6 text-white" />
+                    </div>
+                    <h3 className="font-medium">{genre.name}</h3>
+                    <p className="text-xs text-muted-foreground">{genre.description}</p>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
           </div>
         </div>
