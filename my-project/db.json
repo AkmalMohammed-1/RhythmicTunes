@@ -9,14 +9,26 @@
       "created_at": "2025-11-30T14:54:07.064Z",
       "preferences": {
         "theme": "dark",
-        "autoplay": true,
-        "volume": 80,
-        "quality": "high"
+        "volume": 80
+      },
+      "recently_played": []
+    },
+    {
+      "id": "acca",
+      "username": "Akmal",
+      "email": "akmal@example.com",
+      "password": "demo123",
+      "display_name": "Akmal",
+      "created_at": "2025-12-02T06:43:16.632Z",
+      "preferences": {
+        "theme": "dark",
+        "volume": 80
       },
       "recently_played": [
         "1",
-        "3",
-        "2"
+        "4",
+        "2",
+        "3"
       ]
     }
   ],
@@ -24,34 +36,46 @@
     {
       "id": "1",
       "name": "Lady Gaga",
-      "bio": "Electronic music duo creating atmospheric soundscapes",
-      "image_url": "https://picsum.photos/300/300?random=4",
+      "bio": "American singer, songwriter and actress known for pop anthems",
       "genres": [
-        "Electronic",
-        "Ambient",
-        "Synthwave"
+        "Pop",
+        "Dance-Pop"
       ]
     },
     {
       "id": "2",
       "name": "Kendrick Lamar",
-      "bio": "Singer-songwriter with a passion for storytelling",
-      "image_url": "https://picsum.photos/300/300?random=5",
+      "bio": "American rapper , one of the most influential artists in hip-hop",
       "genres": [
-        "Acoustic",
-        "Folk",
-        "Indie"
+        "Hip-Hop",
+        "Rap"
       ]
     },
     {
       "id": "3",
-      "name": "Sade Nancy",
-      "bio": "EDM producer known for high-energy festival tracks",
-      "image_url": "https://picsum.photos/300/300?random=6",
+      "name": "Sade",
+      "bio": "British-Nigerian singer known for smooth jazz and soul music",
       "genres": [
-        "Electronic",
-        "EDM",
-        "Bass"
+        "R&B",
+        "Soul"
+      ]
+    },
+    {
+      "id": "4",
+      "name": "The Stranglers",
+      "bio": "British rock band known for punk and new wave music",
+      "genres": [
+        "Rock",
+        "New Wave"
+      ]
+    },
+    {
+      "id": "5",
+      "name": "Txmy",
+      "bio": "Emerging electronic music producer and DJ",
+      "genres": [
+        "Dance-Pop",
+        "Soul"
       ]
     }
   ],
@@ -60,9 +84,8 @@
       "id": "1",
       "title": "Judas",
       "artist_id": 1,
-      "duration": 245,
-      "genre": "Electronic",
-      "track_number": 1,
+      "duration": 350,
+      "genre": "Pop",
       "audio_url": "/audio/judas.mp3",
       "play_count": 1250
     },
@@ -70,9 +93,8 @@
       "id": "2",
       "title": "All the stars",
       "artist_id": 2,
-      "duration": 215,
-      "genre": "Synthwave",
-      "track_number": 2,
+      "duration": 235,
+      "genre": "Hip-Hop",
       "audio_url": "/audio/All the Stars.mp3",
       "play_count": 980
     },
@@ -80,11 +102,28 @@
       "id": "3",
       "title": "Smooth Operator",
       "artist_id": 3,
-      "duration": 245,
-      "genre": "Electronic",
-      "track_number": 1,
+      "duration": 254,
+      "genre": "R&B",
       "audio_url": "/audio/Smooth Operator.mp3",
-      "play_count": 1250
+      "play_count": 1350
+    },
+    {
+      "id": "4",
+      "title": "Golden Brown",
+      "artist_id": 4,
+      "duration": 208,
+      "genre": "Rock",
+      "audio_url": "/audio/golden_brown.mp3",
+      "play_count": 2450
+    },
+    {
+      "id": "5",
+      "title": "Ethereal",
+      "artist_id": 5,
+      "duration": 280,
+      "genre": "Soul",
+      "audio_url": "/audio/ethereal.mp3",
+      "play_count": 1750
     }
   ],
   "playlists": [
@@ -95,7 +134,6 @@
       "song_ids": [
         "2"
       ],
-      "is_public": false,
       "user_id": "e8c7",
       "created_at": "2025-11-30T12:24:38.097Z",
       "updated_at": "2025-11-30T12:24:38.097Z"
@@ -107,7 +145,6 @@
       "song_ids": [
         "1"
       ],
-      "is_public": false,
       "user_id": "e8c7",
       "created_at": "2025-11-30T12:57:57.638Z",
       "updated_at": "2025-11-30T12:57:57.638Z"
@@ -119,7 +156,6 @@
       "song_ids": [
         "1"
       ],
-      "is_public": false,
       "user_id": "8e44",
       "created_at": "2025-12-01T04:11:06.225Z",
       "updated_at": "2025-12-01T04:11:06.225Z"
@@ -129,60 +165,71 @@
       "name": "My Playlist #2",
       "description": "Created on 01/12/2025",
       "song_ids": [],
-      "is_public": false,
       "user_id": "8e44",
       "created_at": "2025-12-01T14:47:07.836Z",
       "updated_at": "2025-12-01T14:47:07.837Z"
+    },
+    {
+      "id": "dac8",
+      "name": "My Playlist #1",
+      "description": "Created on 05/12/2025",
+      "song_ids": [
+        "4"
+      ],
+      "is_public": false,
+      "user_id": "acca",
+      "created_at": "2025-12-05T18:21:05.782Z",
+      "updated_at": "2025-12-05T18:21:05.782Z"
     }
   ],
   "genres": [
     {
       "id": "1",
-      "name": "Electronic",
-      "description": "Electronic music and its subgenres",
-      "color": "#3b82f6"
+      "name": "Pop",
+      "description": "Popular music with catchy melodies and broad appeal",
+      "color": "#e91e63"
     },
     {
       "id": "2",
-      "name": "Acoustic",
-      "description": "Acoustic instruments and unplugged sessions",
-      "color": "#f59e0b"
+      "name": "Hip-Hop",
+      "description": "Rhythmic music featuring rap vocals and strong beats",
+      "color": "#9c27b0"
     },
     {
       "id": "3",
-      "name": "Folk",
-      "description": "Traditional and contemporary folk music",
-      "color": "#10b981"
+      "name": "R&B",
+      "description": "Rhythm and blues with soulful vocals and smooth grooves",
+      "color": "#ff9800"
     },
     {
       "id": "4",
-      "name": "EDM",
-      "description": "Electronic Dance Music for the dancefloor",
-      "color": "#ef4444"
+      "name": "Rock",
+      "description": "Guitar-driven music with strong rhythms and energy",
+      "color": "#f44336"
     },
     {
       "id": "5",
-      "name": "Synthwave",
-      "description": "Retro-futuristic electronic music",
-      "color": "#8b5cf6"
+      "name": "Dance-Pop",
+      "description": "Upbeat pop music designed for dancing",
+      "color": "#2196f3"
     },
     {
       "id": "6",
-      "name": "Ambient",
-      "description": "Atmospheric and textural soundscapes",
-      "color": "#06b6d4"
+      "name": "Soul",
+      "description": "Emotionally expressive music with roots in gospel and blues",
+      "color": "#4caf50"
     },
     {
       "id": "7",
-      "name": "Indie",
-      "description": "Independent music across various genres",
-      "color": "#f97316"
+      "name": "New Wave",
+      "description": "Post-punk movement with synthesizer-based sounds",
+      "color": "#00bcd4"
     },
     {
       "id": "8",
-      "name": "Bass",
-      "description": "Bass-heavy electronic music",
-      "color": "#84cc16"
+      "name": "Rap",
+      "description": "Vocal delivery featuring rhyme and wordplay over beats",
+      "color": "#795548"
     }
   ]
 }

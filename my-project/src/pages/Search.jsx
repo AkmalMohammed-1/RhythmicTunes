@@ -5,7 +5,7 @@ import SongList from '../components/SongList'
 import { Input } from '../components/ui/input'
 import { Button } from '../components/ui/button'
 import { Card, CardContent } from '../components/ui/card'
-import { Search as SearchIcon, Music, User, Album } from 'lucide-react'
+import { Search as SearchIcon, Music } from 'lucide-react'
 
 export function Search() {
   const [searchQuery, setSearchQuery] = useState('')

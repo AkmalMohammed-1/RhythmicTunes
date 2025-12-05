@@ -15,8 +15,7 @@ const pageTitles = {
   '/search': 'Search',
   '/library': 'Your Library',
   '/browse': 'Browse',
-  '/radio': 'Radio',
-  '/podcasts': 'Podcasts',
+  '/artists': 'Artists',
   '/liked-songs': 'Liked Songs',
   '/recently-played': 'Recently Played',
 }

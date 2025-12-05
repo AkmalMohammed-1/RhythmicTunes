@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
+import { useAudio } from '../contexts/AudioContext'
 import { userService, musicService } from '../services'
 import SongList from '../components/SongList'
 import { Button } from '../components/ui/button'
 import { 
   ListMusic, 
   Play, 
-  Heart, 
-  Share, 
-  MoreHorizontal, 
-  Edit,
   Trash2,
   ArrowLeft,
   Plus
@@ -19,6 +16,7 @@ import {
 export function Playlist() {
   const { id } = useParams()
   const { user } = useAuth()
+  const { playSong } = useAudio()
   const [playlist, setPlaylist] = useState(null)
   const [songs, setSongs] = useState([])
   const [loading, setLoading] = useState(true)
@@ -78,6 +76,12 @@ export function Playlist() {
       loadPlaylist()
     } catch (error) {
       console.error('Failed to remove song from playlist:', error)
+    }
+  }
+
+  const handlePlayAll = () => {
+    if (songs.length > 0) {
+      playSong(songs[0], songs, 0)
     }
   }
 
@@ -149,7 +153,7 @@ export function Playlist() {
       {/* Playlist Header */}
       <div className="flex flex-col md:flex-row gap-6">
         {/* Playlist Cover */}
-        <div className="w-48 h-48 bg-gradient-to-br from-primary/20 to-primary/10 rounded-lg flex items-center justify-center overflow-hidden flex-shrink-0">
+        <div className="w-48 h-48 bg-linear-to-br from-primary/20 to-primary/10 rounded-lg flex items-center justify-center overflow-hidden shrink-0">
           {playlist.cover_url ? (
             <img 
               src={playlist.cover_url} 
@@ -189,30 +193,16 @@ export function Playlist() {
           {/* Action Buttons */}
           <div className="flex items-center gap-4">
             {songs.length > 0 && (
-              <Button size="lg" className="rounded-full px-8">
+              <Button size="lg" className="rounded-full px-8" onClick={handlePlayAll}>
                 <Play className="h-5 w-5 mr-2" />
                 Play
               </Button>
             )}
-            <Button variant="ghost" size="lg">
-              <Heart className="h-5 w-5" />
-            </Button>
-            <Button variant="ghost" size="lg">
-              <Share className="h-5 w-5" />
-            </Button>
             {isOwner && (
-              <div className="flex items-center gap-2">
-                <Button variant="ghost" size="lg">
-                  <Edit className="h-5 w-5" />
-                </Button>
-                <Button variant="ghost" size="lg" onClick={deletePlaylist}>
-                  <Trash2 className="h-5 w-5" />
-                </Button>
-              </div>
+              <Button variant="ghost" size="lg" onClick={deletePlaylist}>
+                <Trash2 className="h-5 w-5" />
+              </Button>
             )}
-            <Button variant="ghost" size="lg">
-              <MoreHorizontal className="h-5 w-5" />
-            </Button>
           </div>
         </div>
       </div>
@@ -221,6 +211,7 @@ export function Playlist() {
       {songs.length > 0 ? (
         <SongList 
           songs={songs} 
+          onSongSelect={playSong}
           playlist={playlist}
           showRemove={isOwner}
           onRemoveSong={removeSongFromPlaylist}

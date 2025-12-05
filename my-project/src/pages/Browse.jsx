@@ -113,33 +113,6 @@ export function Browse() {
         <SongList songs={featuredSongs} onSongSelect={playSong} showAddToPlaylist />
       </div>
 
-      {/* Genre Cards */}
-      <div className="space-y-4">
-        <h2 className="text-2xl font-semibold">Browse by Genre</h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {genres.map((genre) => (
-            <Card key={genre.id} className="cursor-pointer hover:scale-105 transition-all duration-200 overflow-hidden group">
-              <CardContent className="p-0">
-                <div className={`h-24 relative flex items-center justify-center`} style={{ backgroundColor: genre.color }}>
-                  <Music className="h-8 w-8 text-white" />
-                  <Button 
-                    size="sm" 
-                    className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
-                    onClick={() => playGenrePlaylist(genre.name)}
-                  >
-                    <Play className="h-4 w-4" />
-                  </Button>
-                </div>
-                <div className="p-4">
-                  <h3 className="font-semibold">{genre.name}</h3>
-                  <p className="text-sm text-muted-foreground">{genre.description}</p>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </div>
-
       {/* Top Charts */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">

@@ -85,9 +85,7 @@ export function AuthProvider({ children }) {
         created_at: new Date().toISOString(),
         preferences: {
           theme: 'dark',
-          autoplay: true,
-          volume: 80,
-          quality: 'high'
+          volume: 80
         },
         recently_played: []
       })

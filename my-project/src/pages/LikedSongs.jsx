@@ -6,14 +6,14 @@ import { useLikes } from '../contexts/LikeContext'
 import SongList from '../components/SongList'
 import { Button } from '../components/ui/button'
 import { Card, CardContent } from '../components/ui/card'
-import { Heart, Play, Shuffle, Download, Share, MoreHorizontal } from 'lucide-react'
+import { Heart, Play } from 'lucide-react'
 
 export function LikedSongs() {
   const [likedSongsData, setLikedSongsData] = useState([])
   const [loading, setLoading] = useState(true)
   const [stats, setStats] = useState({ totalSongs: 0, totalDuration: 0 })
   const { user } = useAuth()
-  const { playSong, playPlaylist, currentSong } = useAudio()
+  const { playSong, currentSong } = useAudio()
   const { likedSongs, getLikedCount } = useLikes()
 
   useEffect(() => {
@@ -62,7 +62,7 @@ export function LikedSongs() {
 
   const handlePlayAll = () => {
     if (likedSongsData.length > 0) {
-      playPlaylist(likedSongsData, 0)
+      playSong(likedSongsData[0], likedSongsData, 0)
     }
   }
 
@@ -123,22 +123,6 @@ export function LikedSongs() {
               disabled={likedSongsData.length === 0}
             >
               <Play className="h-6 w-6" />
-            </Button>
-            <Button 
-              variant="outline" 
-              size="lg"
-              onClick={handleShuffle}
-              disabled={likedSongsData.length === 0}
-            >
-              <Shuffle className="h-4 w-4 mr-2" />
-              Shuffle
-            </Button>
-            <Button variant="outline" size="lg">
-              <Download className="h-4 w-4 mr-2" />
-              Download
-            </Button>
-            <Button variant="ghost" size="lg">
-              <MoreHorizontal className="h-4 w-4" />
             </Button>
           </div>
         </div>
