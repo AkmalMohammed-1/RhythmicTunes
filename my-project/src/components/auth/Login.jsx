@@ -27,10 +27,19 @@ export function Login({ onSwitchToSignup }) {
     })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log('Login attempt:', formData)
-    // Add login logic here
+    if (!formData.email || !formData.password) return
+    
+    setIsLoading(true)
+    try {
+      await login(formData.email, formData.password)
+      // Login successful - user will be redirected by AuthContext
+    } catch (error) {
+      console.error('Login failed:', error)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -60,6 +69,11 @@ export function Login({ onSwitchToSignup }) {
           </CardHeader>
           
           <CardContent>
+            {error && (
+              <div className="mb-4 p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md">
+                {error}
+              </div>
+            )}
             <form onSubmit={handleSubmit}>
               <div className="flex flex-col gap-4">
                 <div className="grid gap-2">
@@ -117,8 +131,9 @@ export function Login({ onSwitchToSignup }) {
               type="submit" 
               className="w-full"
               onClick={handleSubmit}
+              disabled={isLoading || !formData.email || !formData.password}
             >
-              Sign In
+              {isLoading ? 'Signing In...' : 'Sign In'}
             </Button>
             
             <div className="relative w-full">

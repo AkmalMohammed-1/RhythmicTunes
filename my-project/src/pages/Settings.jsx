@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useAuth } from '../contexts/AuthContext'
+import { useTheme } from '../components/theme-provider'
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card'
 import { Button } from '../components/ui/button'
 import { Input } from '../components/ui/input'
@@ -8,8 +9,10 @@ import { Settings as SettingsIcon, Save, User, Mail, Eye, EyeOff } from 'lucide-
 
 export function Settings() {
   const { user, updateUser } = useAuth()
+  const { theme, setTheme } = useTheme()
   const [isEditing, setIsEditing] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
+  const [themeLoading, setThemeLoading] = useState(false)
   const [formData, setFormData] = useState({
     display_name: user?.display_name || '',
     username: user?.username || '',
@@ -79,6 +82,36 @@ export function Settings() {
       confirmPassword: ''
     })
     setIsEditing(false)
+  }
+
+  const handleThemeChange = async (e) => {
+    try {
+      setThemeLoading(true)
+      const newTheme = e.target.value
+      
+      // Update ThemeProvider (applies CSS immediately)
+      setTheme(newTheme)
+      
+      // Update user preferences (persists in user data)
+      const result = await updateUser({
+        preferences: {
+          ...user.preferences,
+          theme: newTheme
+        }
+      })
+      
+      if (!result.success) {
+        // Revert theme if user update failed
+        setTheme(theme)
+        alert('Failed to update theme preference')
+      }
+    } catch (error) {
+      console.error('Theme update error:', error)
+      setTheme(theme) // Revert theme
+      alert('Failed to update theme preference')
+    } finally {
+      setThemeLoading(false)
+    }
   }
 
   return (
@@ -256,28 +289,20 @@ export function Settings() {
               <h4 className="font-medium">Theme</h4>
               <p className="text-sm text-muted-foreground">Choose your preferred theme</p>
             </div>
-            <select className="px-3 py-2 border rounded-md bg-background">
+            <select 
+              className="px-3 py-2 border rounded-md bg-background disabled:opacity-50"
+              value={theme}
+              onChange={handleThemeChange}
+              disabled={themeLoading}
+            >
               <option value="dark">Dark</option>
               <option value="light">Light</option>
               <option value="system">System</option>
             </select>
           </div>
-
-          <div className="flex items-center justify-between">
-            <div>
-              <h4 className="font-medium">Auto-play</h4>
-              <p className="text-sm text-muted-foreground">Automatically play similar songs when your music ends</p>
-            </div>
-            <input type="checkbox" className="h-4 w-4" defaultChecked />
-          </div>
-
-          <div className="flex items-center justify-between">
-            <div>
-              <h4 className="font-medium">High Quality Audio</h4>
-              <p className="text-sm text-muted-foreground">Stream music in higher quality (uses more data)</p>
-            </div>
-            <input type="checkbox" className="h-4 w-4" />
-          </div>
+          {themeLoading && (
+            <p className="text-sm text-muted-foreground">Updating theme...</p>
+          )}
         </CardContent>
       </Card>
     </div>

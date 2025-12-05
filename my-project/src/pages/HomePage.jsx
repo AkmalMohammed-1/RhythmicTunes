@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { musicService } from '../services'
 import { usePlaylist } from '../contexts/PlaylistContext'
 import { useLikes } from '../contexts/LikeContext'
@@ -22,6 +23,7 @@ export function HomePage() {
   const [loading, setLoading] = useState(true)
   const { playlists } = usePlaylist()
   const { isLiked, toggleLike } = useLikes()
+  const navigate = useNavigate()
 
   useEffect(() => {
     loadHomeData()
@@ -143,7 +145,7 @@ export function HomePage() {
             <TrendingUp className="h-5 w-5" />
             Popular Right Now
           </h2>
-          <Button variant="ghost" size="sm">
+          <Button variant="ghost" size="sm" onClick={() => navigate('/browse')}>
             See all
           </Button>
         </div>
@@ -233,7 +235,7 @@ export function HomePage() {
               <Heart className="h-5 w-5" />
               Your Playlists
             </h2>
-            <Button variant="ghost" size="sm">
+            <Button variant="ghost" size="sm" onClick={() => navigate('/library')}>
               <Plus className="h-4 w-4 mr-2" />
               Create playlist
             </Button>

@@ -6,6 +6,7 @@ import {
   Heart,
   Plus,
   Music,
+  Users,
   Clock,
   ListMusic,
   Headphones,
@@ -74,6 +75,11 @@ const discoverItems = [
     title: "Browse",
     url: "/browse",
     icon: Music,
+  },
+  {
+    title: "Artists",
+    url: "/artists",
+    icon: Users,
   },
 ];
 

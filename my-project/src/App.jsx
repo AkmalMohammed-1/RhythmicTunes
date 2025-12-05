@@ -2,6 +2,7 @@ import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Layout } from './components/Layout'
 import { ThemeProvider } from './components/theme-provider'
+import { ThemeSync } from './components/ThemeSync'
 import { AudioProvider } from './contexts/AudioContext'
 import { AuthProvider } from './contexts/AuthContext'
 import { PlaylistProvider } from './contexts/PlaylistContext'
@@ -13,6 +14,7 @@ import {
   Search,
   Library,
   Browse,
+  Artists,
   LikedSongs,
   RecentlyPlayed,
   Profile,
@@ -26,6 +28,7 @@ export const App = () => {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="rhythmic-tunes-theme">
       <AuthProvider>
+        <ThemeSync />
         <LikeProvider>
           <PlaylistProvider>
             <AudioProvider>
@@ -46,6 +49,7 @@ export const App = () => {
                           <Route path="/search" element={<Search />} />
                           <Route path="/library" element={<Library />} />
                           <Route path="/browse" element={<Browse />} />
+                          <Route path="/artists" element={<Artists />} />
                           <Route path="/liked-songs" element={<LikedSongs />} />
                           <Route path="/recently-played" element={<RecentlyPlayed />} />
                           <Route path="/profile" element={<Profile />} />

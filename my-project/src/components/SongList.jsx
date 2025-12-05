@@ -182,7 +182,7 @@ function SongList({ songs: propSongs, playlist = null, className, showAddToPlayl
           {/* Album */}
           <div className="hidden md:block flex-1 min-w-0">
             <p className="text-xs text-muted-foreground truncate">
-              {song.album_name || 'Unknown Album'}
+              {song.genre || 'Unknown Genre'}
             </p>
           </div>
 

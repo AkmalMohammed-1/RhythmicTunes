@@ -34,22 +34,6 @@ export const musicService = {
     return response.data
   },
 
-  // Albums
-  getAllAlbums: async () => {
-    const response = await api.get('/albums')
-    return response.data
-  },
-
-  getAlbumById: async (id) => {
-    const response = await api.get(`/albums/${id}`)
-    return response.data
-  },
-
-  getAlbumSongs: async (albumId) => {
-    const response = await api.get(`/songs?album_id=${albumId}`)
-    return response.data
-  },
-
   // Genres
   getAllGenres: async () => {
     const response = await api.get('/genres')
@@ -61,7 +45,7 @@ export const musicService = {
     return response.data
   },
 
-  // Enhanced function to get songs with artist and album names
+  // Enhanced function to get songs with artist names
   getSongsWithDetails: async () => {
     try {
       const [songs, artists] = await Promise.all([
@@ -79,9 +63,7 @@ export const musicService = {
       const enhancedSongs = songs.data.map(song => ({
         ...song,
         artist_name: artistMap[song.artist_id]?.name || 'Unknown Artist',
-        artist: artistMap[song.artist_id],
-        album_name: 'Single', // Default since no albums
-        album: null
+        artist: artistMap[song.artist_id]
       }))
 
       return enhancedSongs
