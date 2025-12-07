@@ -88,7 +88,7 @@ function audioReducer(state, action) {
         currentSong: action.payload.queue[action.payload.index || 0] || null
       }
     
-    case audioActions.NEXT_SONG:
+    case audioActions.NEXT_SONG: {
       const nextIndex = state.shuffle 
         ? Math.floor(Math.random() * state.queue.length)
         : (state.currentIndex + 1) % state.queue.length
@@ -98,8 +98,9 @@ function audioReducer(state, action) {
         currentIndex: nextIndex,
         currentSong: state.queue[nextIndex] || null
       }
+    }
     
-    case audioActions.PREVIOUS_SONG:
+    case audioActions.PREVIOUS_SONG: {
       const prevIndex = state.shuffle 
         ? Math.floor(Math.random() * state.queue.length)
         : state.currentIndex === 0 
@@ -111,8 +112,9 @@ function audioReducer(state, action) {
         currentIndex: prevIndex,
         currentSong: state.queue[prevIndex] || null
       }
+    }
     
-    case audioActions.TOGGLE_REPEAT:
+    case audioActions.TOGGLE_REPEAT: {
       const repeatModes = ['off', 'queue', 'track']
       const currentModeIndex = repeatModes.indexOf(state.repeat)
       const nextMode = repeatModes[(currentModeIndex + 1) % repeatModes.length]
@@ -121,6 +123,7 @@ function audioReducer(state, action) {
         ...state,
         repeat: nextMode
       }
+    }
     
     case audioActions.TOGGLE_SHUFFLE:
       return {

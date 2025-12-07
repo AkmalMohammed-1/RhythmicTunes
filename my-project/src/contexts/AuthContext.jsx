@@ -34,8 +34,7 @@ export function AuthProvider({ children }) {
       setLoading(true)
       setError(null)
 
-      // Simulate API login - replace with real API call
-      const users = await userService.getAllUsers() // You'll need to add this method
+      const users = await userService.getAllUsers() 
       const foundUser = users.find(u => u.email === email)
 
       if (!foundUser) {

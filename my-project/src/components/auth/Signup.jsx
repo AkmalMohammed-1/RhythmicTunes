@@ -39,7 +39,6 @@ export function Signup({ onSwitchToLogin }) {
     }
     
     console.log('Signup attempt:', formData)
-    // Add signup logic here
   }
 
   const passwordsMatch = formData.password === formData.confirmPassword
