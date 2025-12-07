@@ -1,11 +1,53 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useAuth } from '../contexts/AuthContext'
+import { useLikes } from '../contexts/LikeContext'
+import { usePlaylist } from '../contexts/PlaylistContext'
+import { userService } from '../services'
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card'
 import { Badge } from '../components/ui/badge'
 import { UserCircle, Mail, Calendar, Music, Heart, Clock } from 'lucide-react'
 
 export function Profile() {
   const { user } = useAuth()
+  const { likedSongs, loading: likesLoading } = useLikes()
+  const { playlists } = usePlaylist()
+  const [recentlyPlayedCount, setRecentlyPlayedCount] = useState(0)
+  const [userStats, setUserStats] = useState({
+    likedCount: 0,
+    playlistCount: 0,
+    recentlyPlayedCount: 0,
+    estimatedHours: 0
+  })
+
+  useEffect(() => {
+    const loadUserStats = async () => {
+      if (!user?.id) return
+      
+      try {
+        // Get fresh user data for recently played
+        const freshUserData = await userService.getUserById(user.id)
+        const recentlyPlayedCount = freshUserData?.recently_played?.length || 0
+        
+        setUserStats({
+          likedCount: likedSongs?.length || 0,
+          playlistCount: playlists?.length || 0,
+          recentlyPlayedCount,
+          estimatedHours: Math.round(recentlyPlayedCount * 3.5) // 3.5 min average per song
+        })
+        
+      } catch (error) {
+        console.error('Failed to load user stats:', error)
+        setUserStats({
+          likedCount: likedSongs?.length || 0,
+          playlistCount: playlists?.length || 0,
+          recentlyPlayedCount: user?.recently_played?.length || 0,
+          estimatedHours: Math.round((user?.recently_played?.length || 0) * 3.5)
+        })
+      }
+    }
+    
+    loadUserStats()
+  }, [user, likedSongs, playlists])
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -96,7 +138,7 @@ export function Profile() {
                 <div className="flex items-center justify-center w-12 h-12 rounded-full bg-red-100 dark:bg-red-900/20 mx-auto mb-2">
                   <Heart className="h-6 w-6 text-red-500" />
                 </div>
-                <p className="text-2xl font-bold">0</p>
+                <p className="text-2xl font-bold">{userStats.likedCount}</p>
                 <p className="text-sm text-muted-foreground">Liked Songs</p>
               </div>
 
@@ -104,7 +146,7 @@ export function Profile() {
                 <div className="flex items-center justify-center w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/20 mx-auto mb-2">
                   <Music className="h-6 w-6 text-blue-500" />
                 </div>
-                <p className="text-2xl font-bold">0</p>
+                <p className="text-2xl font-bold">{userStats.playlistCount}</p>
                 <p className="text-sm text-muted-foreground">Playlists</p>
               </div>
 
@@ -112,16 +154,16 @@ export function Profile() {
                 <div className="flex items-center justify-center w-12 h-12 rounded-full bg-green-100 dark:bg-green-900/20 mx-auto mb-2">
                   <Clock className="h-6 w-6 text-green-500" />
                 </div>
-                <p className="text-2xl font-bold">0h</p>
-                <p className="text-sm text-muted-foreground">Listening Time</p>
+                <p className="text-2xl font-bold">{userStats.estimatedHours}m</p>
+                <p className="text-sm text-muted-foreground">Est. Listening Time</p>
               </div>
 
               <div className="text-center">
                 <div className="flex items-center justify-center w-12 h-12 rounded-full bg-purple-100 dark:bg-purple-900/20 mx-auto mb-2">
-                  <UserCircle className="h-6 w-6 text-purple-500" />
+                  <Music className="h-6 w-6 text-purple-500" />
                 </div>
-                <p className="text-2xl font-bold">0</p>
-                <p className="text-sm text-muted-foreground">Followers</p>
+                <p className="text-2xl font-bold">{userStats.recentlyPlayedCount}</p>
+                <p className="text-sm text-muted-foreground">Recently Played</p>
               </div>
             </div>
           </CardContent>

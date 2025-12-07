@@ -26,9 +26,7 @@
       },
       "recently_played": [
         "1",
-        "4",
-        "2",
-        "3"
+        "5"
       ]
     }
   ],
@@ -128,58 +126,27 @@
   ],
   "playlists": [
     {
-      "id": "8966",
+      "id": "dd76",
       "name": "My Playlist #1",
-      "description": "Created on 30/11/2025",
+      "description": "Created on 06/12/2025",
       "song_ids": [
-        "2"
-      ],
-      "user_id": "e8c7",
-      "created_at": "2025-11-30T12:24:38.097Z",
-      "updated_at": "2025-11-30T12:24:38.097Z"
-    },
-    {
-      "id": "2207",
-      "name": "New Playlist",
-      "description": "Created on 30/11/2025",
-      "song_ids": [
+        "4",
         "1"
-      ],
-      "user_id": "e8c7",
-      "created_at": "2025-11-30T12:57:57.638Z",
-      "updated_at": "2025-11-30T12:57:57.638Z"
-    },
-    {
-      "id": "f745",
-      "name": "My Playlist #1",
-      "description": "Created on 01/12/2025",
-      "song_ids": [
-        "1"
-      ],
-      "user_id": "8e44",
-      "created_at": "2025-12-01T04:11:06.225Z",
-      "updated_at": "2025-12-01T04:11:06.225Z"
-    },
-    {
-      "id": "337d",
-      "name": "My Playlist #2",
-      "description": "Created on 01/12/2025",
-      "song_ids": [],
-      "user_id": "8e44",
-      "created_at": "2025-12-01T14:47:07.836Z",
-      "updated_at": "2025-12-01T14:47:07.837Z"
-    },
-    {
-      "id": "dac8",
-      "name": "My Playlist #1",
-      "description": "Created on 05/12/2025",
-      "song_ids": [
-        "4"
       ],
       "is_public": false,
       "user_id": "acca",
-      "created_at": "2025-12-05T18:21:05.782Z",
-      "updated_at": "2025-12-05T18:21:05.782Z"
+      "created_at": "2025-12-06T04:08:51.492Z",
+      "updated_at": "2025-12-06T04:08:51.492Z"
+    },
+    {
+      "id": "b165",
+      "name": "My Playlist #2",
+      "description": "Created on 07/12/2025",
+      "song_ids": [],
+      "is_public": false,
+      "user_id": "acca",
+      "created_at": "2025-12-07T06:39:40.439Z",
+      "updated_at": "2025-12-07T06:39:40.439Z"
     }
   ],
   "genres": [

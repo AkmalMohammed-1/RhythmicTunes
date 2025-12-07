@@ -69,7 +69,7 @@ export function LikedSongs() {
   const handleShuffle = () => {
     if (likedSongsData.length > 0) {
       const shuffledSongs = [...likedSongsData].sort(() => Math.random() - 0.5)
-      playPlaylist(shuffledSongs, 0)
+      playSong(shuffledSongs[0], shuffledSongs, 0)
     }
   }
 

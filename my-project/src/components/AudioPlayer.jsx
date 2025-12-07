@@ -60,19 +60,6 @@ function AudioPlayer() {
     setVolume(value[0] / 100)
   }
 
-  const getRepeatIcon = () => {
-    switch (repeat) {
-      case 'track':
-        return Repeat1
-      case 'queue':
-        return Repeat
-      default:
-        return Repeat
-    }
-  }
-
-  const RepeatIcon = getRepeatIcon()
-
   return (
     <div className={cn(
       "fixed bottom-0 right-0 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 border-t border-border z-50 transition-all duration-300",
@@ -269,7 +256,11 @@ function AudioPlayer() {
                   repeat !== 'off' && "text-primary"
                 )}
               >
-                <RepeatIcon className="h-4 w-4" />
+                {repeat === 'track' ? (
+                  <Repeat1 className="h-4 w-4" />
+                ) : (
+                  <Repeat className="h-4 w-4" />
+                )}
               </Button>
             </div>
             

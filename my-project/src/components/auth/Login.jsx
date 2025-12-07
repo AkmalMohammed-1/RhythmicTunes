@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useAuth } from '../../contexts/AuthContext'
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -15,6 +16,9 @@ import { Music, Eye, EyeOff } from 'lucide-react'
 
 export function Login({ onSwitchToSignup }) {
   const [showPassword, setShowPassword] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState('')
+  const { login } = useAuth()
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -32,11 +36,13 @@ export function Login({ onSwitchToSignup }) {
     if (!formData.email || !formData.password) return
     
     setIsLoading(true)
+    setError('')
     try {
       await login(formData.email, formData.password)
       // Login successful - user will be redirected by AuthContext
-    } catch (error) {
-      console.error('Login failed:', error)
+    } catch (err) {
+      setError(err.message || 'Login failed')
+      console.error('Login failed:', err)
     } finally {
       setIsLoading(false)
     }
